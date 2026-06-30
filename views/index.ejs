@@ -1,0 +1,55 @@
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">A small blog about the work behind the work</p>
+      <h1 class="hero-title">Notes on craft,<br />focus, and finishing things.</h1>
+      <p class="hero-sub">Inkwell is a quiet corner for essays on productivity, design and the slow practice of getting better at what you do.</p>
+    </div>
+    <form class="search-card" action="/" method="GET">
+      <label for="q">Search the archive</label>
+      <input type="text" id="q" name="q" placeholder="Try “focus” or “design”" value="<%= search %>" />
+      <button type="submit" class="btn">Search</button>
+    </form>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="filter-row">
+    <a href="/" class="chip <%= !currentCategory ? 'chip-active' : '' %>">All</a>
+    <% categories.forEach(function(cat) { %>
+      <a href="/?category=<%= encodeURIComponent(cat) %>" class="chip <%= currentCategory === cat ? 'chip-active' : '' %>"><%= cat %></a>
+    <% }) %>
+  </div>
+
+  <% if (posts.length === 0) { %>
+    <div class="empty-state">
+      <p>No posts here yet. Try a different search or check back soon.</p>
+    </div>
+  <% } else { %>
+    <div class="post-grid">
+      <% posts.forEach(function(post) { %>
+        <article class="post-card">
+          <a href="/<%= post.slug %>" class="post-card-link">
+            <p class="post-card-category"><%= post.category %></p>
+            <h2 class="post-card-title"><%= post.title %></h2>
+            <p class="post-card-excerpt"><%= post.excerpt %></p>
+            <p class="post-card-meta">
+              <%= post.author ? post.author.name : 'Inkwell' %>
+              &middot;
+              <%= post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '' %>
+            </p>
+          </a>
+        </article>
+      <% }) %>
+    </div>
+
+    <% if (totalPages > 1) { %>
+      <nav class="pagination">
+        <% for (let p = 1; p <= totalPages; p++) { %>
+          <a href="/?page=<%= p %><%= currentCategory ? '&category=' + encodeURIComponent(currentCategory) : '' %>"
+             class="page-link <%= p === page ? 'page-link-active' : '' %>"><%= p %></a>
+        <% } %>
+      </nav>
+    <% } %>
+  <% } %>
+</section>

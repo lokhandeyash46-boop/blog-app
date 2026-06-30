@@ -1,0 +1,46 @@
+<section class="wrap auth-wrap">
+  <div class="auth-card form-card-wide">
+    <p class="eyebrow"><%= post._id ? 'Editing' : 'New post' %></p>
+    <h1 class="auth-title"><%= title %></h1>
+
+    <% if (errors && errors.length) { %>
+      <ul class="form-errors">
+        <% errors.forEach(function(e) { %><li><%= e %></li><% }) %>
+      </ul>
+    <% } %>
+
+    <form action="<%= formAction %>" method="POST" class="form">
+      <label for="title">Title</label>
+      <input type="text" id="title" name="title" value="<%= post.title || '' %>" required maxlength="140" />
+
+      <label for="excerpt">Excerpt</label>
+      <textarea id="excerpt" name="excerpt" rows="2" maxlength="280"><%= post.excerpt || '' %></textarea>
+      <p class="field-hint">Shown on the homepage card. Keep it under 280 characters.</p>
+
+      <label for="content">Content</label>
+      <textarea id="content" name="content" rows="12" required><%= post.content || '' %></textarea>
+
+      <div class="form-row">
+        <div>
+          <label for="category">Category</label>
+          <input type="text" id="category" name="category" value="<%= post.category || '' %>" placeholder="General" />
+        </div>
+        <div>
+          <label for="tags">Tags</label>
+          <input type="text" id="tags" name="tags" value="<%= (post.tags || []).join(', ') %>" placeholder="comma, separated" />
+        </div>
+      </div>
+
+      <label for="coverImage">Cover image URL (optional)</label>
+      <input type="text" id="coverImage" name="coverImage" value="<%= post.coverImage || '' %>" />
+
+      <label for="status">Status</label>
+      <select id="status" name="status">
+        <option value="draft" <%= post.status === 'draft' || !post.status ? 'selected' : '' %>>Draft</option>
+        <option value="published" <%= post.status === 'published' ? 'selected' : '' %>>Published</option>
+      </select>
+
+      <button type="submit" class="btn btn-full"><%= post._id ? 'Save changes' : 'Create post' %></button>
+    </form>
+  </div>
+</section>

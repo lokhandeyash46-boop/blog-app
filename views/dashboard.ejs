@@ -1,0 +1,50 @@
+<section class="wrap">
+  <div class="dashboard-header">
+    <div>
+      <p class="eyebrow"><%= currentUser.role === 'admin' ? 'All posts' : 'Your posts' %></p>
+      <h1 class="page-title">Dashboard</h1>
+    </div>
+    <a href="/posts/new" class="btn">New post</a>
+  </div>
+
+  <% if (typeof query !== 'undefined' && query.created) { %>
+    <p class="flash flash-success">Post created.</p>
+  <% } %>
+
+  <% if (posts.length === 0) { %>
+    <div class="empty-state">
+      <p>No posts yet. <a href="/posts/new">Write your first one</a>.</p>
+    </div>
+  <% } else { %>
+    <table class="post-table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Status</th>
+          <% if (currentUser.role === 'admin') { %><th>Author</th><% } %>
+          <th>Views</th>
+          <th>Updated</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% posts.forEach(function(post) { %>
+          <tr>
+            <td><a href="/<%= post.slug %>"><%= post.title %></a></td>
+            <td><span class="badge badge-<%= post.status %>"><%= post.status %></span></td>
+            <% if (currentUser.role === 'admin') { %><td><%= post.author ? post.author.name : '—' %></td><% } %>
+            <td><%= post.views %></td>
+            <td><%= new Date(post.updatedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) %></td>
+            <td class="table-actions">
+              <a href="/posts/<%= post._id %>/edit">Edit</a>
+              <form action="/posts/<%= post._id %>?_method=DELETE" method="POST" class="inline-form"
+                    onsubmit="return confirm('Delete this post?');">
+                <button type="submit" class="link-btn link-btn-danger">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</section>

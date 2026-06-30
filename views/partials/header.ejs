@@ -1,0 +1,26 @@
+<header class="site-header">
+  <div class="wrap header-row">
+    <a href="/" class="wordmark">
+      <span class="wordmark-mark">&#10022;</span>
+      Inkwell
+    </a>
+
+    <nav class="main-nav">
+      <a href="/">Home</a>
+      <% if (locals.currentUser) { %>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/posts/new">Write</a>
+        <% if (currentUser.role === 'admin') { %>
+          <a href="/admin/users">Users</a>
+        <% } %>
+        <a href="/profile">Profile</a>
+        <form action="/logout" method="POST" class="inline-form">
+          <button type="submit" class="link-btn">Sign out</button>
+        </form>
+      <% } else { %>
+        <a href="/login">Sign in</a>
+        <a href="/register" class="btn btn-small">Start writing</a>
+      <% } %>
+    </nav>
+  </div>
+</header>
